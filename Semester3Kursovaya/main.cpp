@@ -24,3 +24,12 @@ Template Library).
 ­- использование потоков С++, перегрузки операторов ввода/вывода, контролирования
 работы с потоком.
 */
+#include "User.h"
+
+using namespace std;
+
+void main() {
+	/*User user;
+	getline(cin, user.login);
+	cout << user.login;*/
+}
