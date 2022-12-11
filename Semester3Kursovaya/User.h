@@ -18,13 +18,17 @@ public:
 
 	string getLogin();
 	string getPassword();
+
 	void printData();
+	string printlogin();
+	string printPass();
+	int printCoeff();
+	
 	void makeAdmin();
+	
+	void fileWrite(string path);
+	void getFromFile(string path);
 
 	
 };
-//
-//public:
-//	User();
-//	~User();
-//};
+

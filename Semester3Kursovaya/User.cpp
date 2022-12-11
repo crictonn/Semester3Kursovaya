@@ -1,5 +1,5 @@
 #include "User.h"
-
+#include <fstream>
 
 User::User() {
 	login = getLogin();
@@ -47,6 +47,45 @@ void User::makeAdmin() {
 	adminCoeff = 1;
 }
 
+
 void User::printData() {
 	cout << login << " " << password << " " << adminCoeff << endl;
+}
+
+string User::printlogin(){
+	return login;
+}
+
+string User::printPass(){
+	return password;
+}
+
+int User::printCoeff(){
+	return adminCoeff;
+}
+
+void User::fileWrite(string path) {
+	ofstream out;
+	try {
+		out.open(path, ios::app); //Здесь нужно прописать ios::binary, что бы работало с бинарными файлами
+		out << login << password << adminCoeff << endl;
+		out.close();
+	}
+	catch (...) {
+		cout << "Ошибка при попытке открытия файла! ";
+	}
+}
+
+void User::getFromFile(string path) {
+	ifstream in;
+	try {
+		in.open(path); //Здесь нужно прописать ios::binary, что бы работало с бинарными файлами
+		while (getline(in, login)) {
+			cout << login << endl;
+		}
+		in.close();
+	}
+	catch (...) {
+		cout << "Ошибка при попытке открытия файла! ";
+	}
 }
