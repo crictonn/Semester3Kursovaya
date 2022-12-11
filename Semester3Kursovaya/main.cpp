@@ -25,10 +25,21 @@ Template Library).
 работы с потоком.
 */
 #include "User.h"
+#include "Functions.h"
+#include <Windows.h>
 
 using namespace std;
 
 void main() {
+	SetConsoleCP(1251);
+	SetConsoleOutputCP(1251);
+	
+	prevMenu();
+	
+	
+	//User user;
+	//user.makeAdmin();
+	//user.printData();
 	/*User user;
 	getline(cin, user.login);
 	cout << user.login;*/
