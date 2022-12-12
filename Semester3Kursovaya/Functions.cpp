@@ -10,6 +10,32 @@ using namespace std;
 
 string userPath = "Users.txt", orderPath = "Orders.txt";
 
+void createStaticAdmin() {
+	ifstream in(userPath, ios::app);
+	int check = 0;
+	string line, adm;
+	size_t start, end = 0;
+	vector<string> admCheck;
+	while (getline(in, line)) {
+		while ((start = line.find_first_not_of(';', end)) != std::string::npos)
+		{
+			end = line.find(';', start);
+			admCheck.push_back(line.substr(start, end - start));
+		}
+		adm = admCheck[0];
+		if (adm == "admin") {
+			check = 1;
+			break;
+		}
+	}
+	if (check != 1) {
+		User admin("admin", "admin");
+		admin.makeAdmin();
+		admin.fileWrite(userPath);
+	}
+	
+}
+
 void prevMenu() {
 	while (true) {
 		system("cls");
@@ -50,7 +76,7 @@ void registration() {
 	size_t start, end = 0;
 	string login = "", pass, buff, logExistCheck;
 	vector <string> vect;
-	ifstream in(userPath);
+	ifstream in(userPath, ios::app);
 
 	while (login.empty()) {
 		while (true) {

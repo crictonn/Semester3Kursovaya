@@ -1,11 +1,3 @@
-qwert;qwert;0;
-admin;admin;0;
-qwerty;qwerty;0;
-q;1234;0;
-qwertyuiop;qwertyuiop;0;
-asdf;asdf;0;
-qwerty;qwerty;0;
-test;test;0;
-probel;parol;0;
-jghdfjghjklds;ggdsuhfkljdsbfj;0;
-;gsdfga;0;
+admin;admin;1;
+qwer;qwer;0;
+qazq;qazq;0;
