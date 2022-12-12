@@ -1,6 +1,9 @@
 #pragma once
+#include "Functions.h"
 #include <string>
 #include <iostream>
+#include <fstream>
+#include <vector>
 
 using namespace std;
 
@@ -27,7 +30,7 @@ public:
 	void makeAdmin();
 	
 	void fileWrite(string path);
-	void getFromFile(string path);
+	void getFromFile(string path, string checkLogin);
 
 	
 };

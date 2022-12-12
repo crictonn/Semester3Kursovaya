@@ -1,5 +1,5 @@
 #include "User.h"
-#include <fstream>
+
 
 User::User() {
 	login = getLogin();
@@ -68,7 +68,7 @@ void User::fileWrite(string path) {
 	ofstream out;
 	try {
 		out.open(path, ios::app); //Здесь нужно прописать ios::binary, что бы работало с бинарными файлами
-		out << login << password << adminCoeff << endl;
+		out << login << ";" << password << ";" << adminCoeff << ";" << endl;
 		out.close();
 	}
 	catch (...) {
@@ -76,12 +76,48 @@ void User::fileWrite(string path) {
 	}
 }
 
-void User::getFromFile(string path) {
+void User::getFromFile(string path, string checkLogin) {
 	ifstream in;
+	string buff, passCheck;
+	vector <string> out;
+	const char delim = ';';
+	bool check = false;
 	try {
 		in.open(path); //Здесь нужно прописать ios::binary, что бы работало с бинарными файлами
-		while (getline(in, login)) {
-			cout << login << endl;
+		while (getline(in, buff)) {
+			size_t start, end = 0;
+			while ((start = buff.find_first_not_of(delim, end)) != std::string::npos)
+			{
+				end = buff.find(delim, start);
+				out.push_back(buff.substr(start, end - start));
+			}
+			login = out[0];
+			if (checkLogin == login) {
+				check = true;
+				password = out[1];
+				adminCoeff = atoi(out[2].c_str());
+				while (passCheck != "0") {
+					system("cls");
+					cout << "Введите Ваш логин: " << login << endl;
+					cout << "Введите Ваш пароль: ";
+					getline(cin, passCheck);
+					if (password == passCheck) {
+						cout << "Вы вошли\n";
+						system("pause");
+						mainMenu();
+						break;
+					}
+					else {
+						cout << "Неверный пароль!\n";
+						system("pause");
+					}
+				}
+			}
+			out.clear();
+		}
+		if (!check) {
+			cout << "Неверный логин";
+			system("pause");
 		}
 		in.close();
 	}
