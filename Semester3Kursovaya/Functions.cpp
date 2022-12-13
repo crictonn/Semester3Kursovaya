@@ -135,6 +135,25 @@ void registration() {
 }
 
 
-void mainMenu() {
-	
+void userMenu() {
+	while (true) {
+		system("cls");
+		cout <<
+			"1. Сформировать заказ\n"
+			"2. Просмотреть информацию о заказе\n"
+			"3. Выход" << endl;
+		switch (_getch())
+		{
+		case '1': break;
+		case '2': break;
+		case '3': return; break;
+		}
+	}
+}
+
+void adminMenu() {
+	cout <<
+		"1. "
+		""
+		"" << endl;
 }

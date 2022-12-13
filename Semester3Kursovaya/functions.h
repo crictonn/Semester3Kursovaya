@@ -1,7 +1,9 @@
 #pragma once
 
-void mainMenu();
+void createStaticAdmin();
 void loggingIn();
 void registration();
+
 void prevMenu();
-void createStaticAdmin();
+void userMenu();
+void adminMenu();

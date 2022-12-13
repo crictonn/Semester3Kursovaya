@@ -102,9 +102,12 @@ void User::getFromFile(string path, string checkLogin) {
 					cout << "Введите Ваш пароль: ";
 					getline(cin, passCheck);
 					if (password == passCheck) {
-						cout << "Вы вошли\n";
-						system("pause");
-						mainMenu();
+						if (adminCoeff == 1) {
+							adminMenu();
+						}
+						else {
+							userMenu();
+						}
 						break;
 					}
 					else {

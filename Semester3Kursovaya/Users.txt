@@ -1,3 +1,5 @@
 admin;admin;1;
 qwer;qwer;0;
 qazq;qazq;0;
+qwert;qwert;0;
+rty;123456;0;
