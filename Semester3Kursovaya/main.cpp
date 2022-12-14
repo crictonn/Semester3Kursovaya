@@ -36,7 +36,7 @@ void main() {
 	createStaticAdmin();
 	prevMenu();
 	
-	
+
 	//User user;
 	//user.makeAdmin();
 	//user.printData();

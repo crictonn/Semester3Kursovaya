@@ -1,13 +1,13 @@
 #pragma once
 #include <string>
+#include "Product.h"
 
 using namespace std;
 
-class Order
+class Order : public Product
 {
 private:
-	string name, brand, number, status, customerFIO, customerPhoneNumber;
-	float price;
+	string number, status, customerFIO, customerPhoneNumber;
 
 public:
 	Order();

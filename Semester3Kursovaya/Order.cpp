@@ -6,6 +6,6 @@
 
 Order::Order() {
 	name = brand = number = customerFIO = customerPhoneNumber = "None"; 
-	price = 0;
+	price = inStock = 0;
 }
 Order::~Order() {};

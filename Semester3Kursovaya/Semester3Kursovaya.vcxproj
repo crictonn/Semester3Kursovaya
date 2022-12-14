@@ -142,11 +142,13 @@
     <ClCompile Include="Functions.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Order.cpp" />
+    <ClCompile Include="Product.cpp" />
     <ClCompile Include="User.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Functions.h" />
     <ClInclude Include="Order.h" />
+    <ClInclude Include="Product.h" />
     <ClInclude Include="User.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
