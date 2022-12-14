@@ -245,8 +245,9 @@ void adminMenu() {
 			"3. Сформировать заказ\n"
 			"4. Просмотреть информацию о заказе\n"
 			"5. Изменить данные о заказе\n"
-			"6. Меню работы с пользователями\n"
-			"7. Выход" << endl;
+			"6. Удалить заказ\n"
+			"7. Меню работы с пользователями\n"
+			"8. Выход" << endl;
 		switch (_getch())
 		{
 		case '1': printCatalog(); break;
@@ -255,7 +256,8 @@ void adminMenu() {
 		case '4': break;
 		case '5': break;
 		case '6': break;
-		case '7': return; break;
+		case '7': break;
+		case '8': return; break;
 		}
 	}
 }
