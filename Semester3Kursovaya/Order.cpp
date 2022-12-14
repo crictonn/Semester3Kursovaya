@@ -20,6 +20,17 @@ Order::Order(string Number, string Stat, string fio, string pone, Product produc
 	inStock = product.inStock;
 }
 
+Order::Order(string Number, string Stat, string fio, string pone, string Name, string Brand, float Price, int instock) {
+	number = Number;
+	status = Stat;
+	customerFIO = fio;
+	customerPhoneNumber = pone;
+	name = Name;
+	brand = Brand;
+	price = Price;
+	inStock = instock;
+}
+
 Order::~Order() {};
 
 

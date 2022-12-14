@@ -244,7 +244,7 @@ void placeOrder() {
 	}
 	int productAmount = 0;
 	getline(cin, selection);
-	for (int i = 0; i < 10; i++) {
+	for (int i = 0; i < 5; i++) {
 		ordNumber += char(rand() % 26 + 0x61);
 		ordNumber += to_string(rand() % 10);
 	}
@@ -297,6 +297,59 @@ void placeOrder() {
 	}
 };
 
+void viewOrder() {
+	system("cls");
+	const char delim = ';';
+
+	ifstream in(orderPath);
+	vector <string> ords;
+	string buff;
+	while (true) {
+		cout <<
+			"1. Вывод всех заказов\n"
+			"2. Вывод заказа по его номеру" << endl;
+		switch (_getch())
+		{
+		case '1': 
+			system("cls");
+
+			while (getline(in, buff)) {
+				size_t start, end = 0;
+				while ((start = buff.find_first_not_of(delim, end)) != std::string::npos)
+				{
+					end = buff.find(delim, start);
+					ords.push_back(buff.substr(start, end - start));
+				}
+				cout << ords[0] << " " << ords[1] << " " << ords[2] << " " << ords[3] << " " << ords[4] << " " << ords[5] << " " << ords[6] << " " << ords[7] << endl;
+				ords.clear();
+			}
+			system("pause");
+			return; break;
+		case '2': 
+			system("cls");
+			cout << "Введите номер заказа: ";
+			string ordNumb;
+			getline(cin, ordNumb);
+
+			while (getline(in, buff)) {
+				size_t start, end = 0;
+				while ((start = buff.find_first_not_of(delim, end)) != std::string::npos)
+				{
+					end = buff.find(delim, start);
+					ords.push_back(buff.substr(start, end - start));
+				}
+				if (ordNumb == ords[0]) {
+					cout << ords[0] << " " << ords[1] << " " << ords[2] << " " << ords[3] << " " << ords[4] << " " << ords[5] << " " << ords[6] << " " << ords[7] << endl;
+					break;
+				}
+				ords.clear();
+			}
+			system("pause");
+			return; break;
+		}
+		
+	}
+}
 
 void userMenu() {
 	while (true) {
@@ -333,7 +386,7 @@ void adminMenu() {
 		case '1': printCatalog(); break;
 		case '2': addToCatalog(); break;
 		case '3': placeOrder(); break;
-		case '4': break;
+		case '4': viewOrder(); break;
 		case '5': break;
 		case '6': break;
 		case '7': break;

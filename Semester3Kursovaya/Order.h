@@ -13,6 +13,7 @@ public:
 
 	Order();
 	Order(string Number, string Stat, string fio, string pone, Product product);
+	Order(string Number, string Stat, string fio, string pone, string name, string brand, float price, int instock);
 	~Order();
 };
 

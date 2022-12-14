@@ -34,12 +34,14 @@ using namespace std;
 void main() {
 	SetConsoleCP(1251);
 	SetConsoleOutputCP(1251);
-	placeOrder();
-	/*createStaticAdmin();
-	prevMenu();*/
+
+	createStaticAdmin();
+	prevMenu();
+	
+	
 	//addToCatalog();
 	//placeOrder();
-
+	//viewOrder();
 
 	//User user;
 	//user.makeAdmin();
