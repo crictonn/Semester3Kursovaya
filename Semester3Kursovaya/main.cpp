@@ -33,8 +33,9 @@ using namespace std;
 void main() {
 	SetConsoleCP(1251);
 	SetConsoleOutputCP(1251);
-	createStaticAdmin();
-	prevMenu();
+	/*createStaticAdmin();
+	prevMenu();*/
+	placeOrder();
 	
 
 	//User user;

@@ -218,6 +218,32 @@ void printCatalog() {
 	system("pause");
 };
 
+void placeOrder() {
+	ifstream in(productsPath), ordIn(orderPath);
+	string buff, selection;
+	vector<string> products;
+	const char delim = ';';
+	cout << "Выберите один товар из каталога: " << endl;
+	int l = 0;
+	while (getline(in, buff)) {
+		size_t start, end = 0;
+		while ((start = buff.find_first_not_of(delim, end)) != std::string::npos)
+		{
+			end = buff.find(delim, start);
+			products.push_back(buff.substr(start, end - start));
+		}
+		cout << products[4*l] << endl;
+		l++;
+	}
+	getline(cin, selection);
+	for (int i = 0; i < l; i++) {
+		if (selection == products[i * 4]) {
+
+		}
+	}
+};
+
+
 void userMenu() {
 	while (true) {
 		system("cls");
