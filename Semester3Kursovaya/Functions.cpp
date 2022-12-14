@@ -6,6 +6,10 @@
 #include <string>
 #include <fstream>
 #include <vector>
+#include <time.h>
+#include <random>
+#include "Order.h"
+
 
 using namespace std;
 
@@ -138,11 +142,11 @@ ostream& operator << (ostream & out, const Product & p) {
 	return out << p.name << ';' << p.brand << ';' << p.price << ';' << p.inStock << ';'<<'\n';
 }
 
+
 void floatException(float value) {
 	if (value) throw 1;
 	else throw "Error";
 }
-
 
 void addToCatalog() {
 	system("cls");
@@ -219,10 +223,13 @@ void printCatalog() {
 };
 
 void placeOrder() {
-	ifstream in(productsPath), ordIn(orderPath);
-	string buff, selection;
-	vector<string> products;
+	srand(time(NULL));
+
+	ifstream in(productsPath), ordIn(orderPath, ios::app);
+	string buff, selection, ordNumber = "";
+	vector<string> products, orderable;
 	const char delim = ';';
+	bool existance = false;
 	cout << "Выберите один товар из каталога: " << endl;
 	int l = 0;
 	while (getline(in, buff)) {
@@ -235,10 +242,57 @@ void placeOrder() {
 		cout << products[4*l] << endl;
 		l++;
 	}
+	int productAmount = 0;
 	getline(cin, selection);
+	for (int i = 0; i < 10; i++) {
+		ordNumber += char(rand() % 26 + 0x61);
+		ordNumber += to_string(rand() % 10);
+	}
 	for (int i = 0; i < l; i++) {
 		if (selection == products[i * 4]) {
-
+			existance = true;
+			productAmount++;
+			orderable.push_back(products[i * 4 + 1]);
+		}
+	}
+	if (productAmount == 0) {
+		cout << "Такого товара нет в каталоге " << endl;
+		system("pause");
+	}
+	else if (productAmount == 1) {
+		Product pr(selection, products[1], atoi(products[2].c_str()), atoi(products[3].c_str()));
+		cout << "Введите ваши ФИО: " << endl;
+		string fio;
+		getline(cin, fio);
+		cout << "Введите ваш номер телефона: " << endl;
+		string phone;
+		getline(cin, phone);
+		Order order(ordNumber, "На обработке", fio, phone, pr);
+		order.fileWriteOrder(orderPath);
+		cout << "Заказ оформлен!" << endl;
+		system("pause");
+	}
+	else {
+		string br;
+		cout << "Выберите бренд: \n";
+		for (int i = 0; i < productAmount; i++) {
+			cout << orderable[i] << endl;
+		}
+		getline(cin, br);
+		for (int i = 0; i < productAmount; i++) {
+			if (br == orderable[i]) {
+				Product pr(selection, br, atoi(products[i*2+4].c_str()), atoi(products[i*3+4].c_str()));
+				cout << "Введите ваши ФИО: " << endl;
+				string fio;
+				getline(cin, fio);
+				cout << "Введите ваш номер телефона: " << endl;
+				string phone;
+				getline(cin, phone);
+				Order order(ordNumber, "На обработке", fio, phone, pr);
+				order.fileWriteOrder(orderPath);
+				cout << "Заказ оформлен!" << endl;
+				system("pause");
+			}
 		}
 	}
 };
@@ -255,7 +309,7 @@ void userMenu() {
 		switch (_getch())
 		{
 		case '1': printCatalog(); break;
-		case '2': ; break;
+		case '2': placeOrder(); break;
 		case '3': break;
 		case '4': return; break;
 		}
@@ -278,7 +332,7 @@ void adminMenu() {
 		{
 		case '1': printCatalog(); break;
 		case '2': addToCatalog(); break;
-		case '3': break;
+		case '3': placeOrder(); break;
 		case '4': break;
 		case '5': break;
 		case '6': break;

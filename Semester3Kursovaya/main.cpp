@@ -27,16 +27,19 @@ Template Library).
 #include "User.h"
 #include "Functions.h"
 #include <Windows.h>
+#include <time.h>
 
 using namespace std;
 
 void main() {
 	SetConsoleCP(1251);
 	SetConsoleOutputCP(1251);
+	placeOrder();
 	/*createStaticAdmin();
 	prevMenu();*/
-	placeOrder();
-	
+	//addToCatalog();
+	//placeOrder();
+
 
 	//User user;
 	//user.makeAdmin();
