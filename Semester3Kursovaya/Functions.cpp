@@ -142,7 +142,6 @@ ostream& operator << (ostream & out, const Product & p) {
 	return out << p.name << ';' << p.brand << ';' << p.price << ';' << p.inStock << ';'<<'\n';
 }
 
-
 void floatException(float value) {
 	if (value) throw 1;
 	else throw "Error";
@@ -367,7 +366,7 @@ void orderDelete() {
 	cout << "Введите номер заказа для удаления: ";
 	getline(cin, ordNumber);
 	while (getline(in, buff)) {
-		int ck = 0;
+		int ck = 0, k = 0;
 		size_t start, end = 0;
 		while ((start = buff.find_first_not_of(delim, end)) != std::string::npos)
 		{
@@ -380,8 +379,9 @@ void orderDelete() {
 			else break;
 		}
 		if (ck == 1) {
-			Order order(ords[0],ords[1], ords[2], ords[3], ords[4], ords[5], atof(ords[6].c_str()), atoi(ords[7].c_str()));
+			Order order(ords[k],ords[k+1], ords[k + 2], ords[k + 3], ords[k + 4], ords[k + 5], atof(ords[k + 6].c_str()), atoi(ords[k + 7].c_str()));
 			ordVect.push_back(order);
+			k++;
 		}
 		ords.clear();
 	}
@@ -389,7 +389,11 @@ void orderDelete() {
 	for (int i = 0; i < ordVect.size(); i++) {
 		ordVect[i].fileDeleteOrder(orderPath);
 	}
+	cout << "Удаление успешно" << endl;
+	system("pause");
 }
+
+void 
 
 void userMenu() {
 	while (true) {
@@ -428,9 +432,7 @@ void adminMenu() {
 		case '3': placeOrder(); break;
 		case '4': viewOrder(); break;
 		case '5': break;
-		case '6': 
-			orderDelete();
-			break;
+		case '6': orderDelete(); break;
 		case '7': break;
 		case '8': return; break;
 		}
