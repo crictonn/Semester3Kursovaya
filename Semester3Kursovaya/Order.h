@@ -10,6 +10,7 @@ private:
 
 public:
 	void fileWriteOrder(string path);
+	void fileDeleteOrder(string path);
 
 	Order();
 	Order(string Number, string Stat, string fio, string pone, Product product);

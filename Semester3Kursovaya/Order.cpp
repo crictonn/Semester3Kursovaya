@@ -39,3 +39,9 @@ void Order::fileWriteOrder(string path) {
 	out.open(path, ios::app);
 	out << number << ';' << name << ';' << brand << ';' << status << ';' << price << ';' << inStock << ';' << customerFIO << ';' << customerPhoneNumber << ';' << endl;
 };
+
+void Order::fileDeleteOrder(string path) {
+	ofstream out;
+	out.open(path, ios::trunc);
+	out << number << ';' << name << ';' << brand << ';' << status << ';' << price << ';' << inStock << ';' << customerFIO << ';' << customerPhoneNumber << ';' << endl;
+};

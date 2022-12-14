@@ -223,11 +223,13 @@ void printCatalog() {
 };
 
 void placeOrder() {
+	system("cls");
 	srand(time(NULL));
 
-	ifstream in(productsPath), ordIn(orderPath, ios::app);
+	ifstream in(productsPath);
 	string buff, selection, ordNumber = "";
 	vector<string> products, orderable;
+	vector<Product> vectProd;
 	const char delim = ';';
 	bool existance = false;
 	cout << "Выберите один товар из каталога: " << endl;
@@ -250,9 +252,11 @@ void placeOrder() {
 	}
 	for (int i = 0; i < l; i++) {
 		if (selection == products[i * 4]) {
+			Product prd(products[i*4], products[i*4+1], atof(products[i*4+2].c_str()), atoi(products[i*4+3].c_str()));
+			vectProd.push_back(prd);
 			existance = true;
 			productAmount++;
-			orderable.push_back(products[i * 4 + 1]);
+			//orderable.push_back(products[i * 4 + 1]);
 		}
 	}
 	if (productAmount == 0) {
@@ -260,14 +264,14 @@ void placeOrder() {
 		system("pause");
 	}
 	else if (productAmount == 1) {
-		Product pr(selection, products[1], atoi(products[2].c_str()), atoi(products[3].c_str()));
+		//Product pr(selection, products[1], atoi(products[2].c_str()), atoi(products[3].c_str()));
 		cout << "Введите ваши ФИО: " << endl;
 		string fio;
 		getline(cin, fio);
 		cout << "Введите ваш номер телефона: " << endl;
 		string phone;
 		getline(cin, phone);
-		Order order(ordNumber, "На обработке", fio, phone, pr);
+		Order order(ordNumber, "На обработке", fio, phone, vectProd[0]);
 		order.fileWriteOrder(orderPath);
 		cout << "Заказ оформлен!" << endl;
 		system("pause");
@@ -276,19 +280,19 @@ void placeOrder() {
 		string br;
 		cout << "Выберите бренд: \n";
 		for (int i = 0; i < productAmount; i++) {
-			cout << orderable[i] << endl;
+			cout << /*orderable[i]*/vectProd[i].brand << endl;
 		}
 		getline(cin, br);
 		for (int i = 0; i < productAmount; i++) {
-			if (br == orderable[i]) {
-				Product pr(selection, br, atoi(products[i*2+4].c_str()), atoi(products[i*3+4].c_str()));
+			if (br == /*orderable[i]*/vectProd[i].brand) {
+				//Product pr(selection, br, atoi(products[i*2+4].c_str()), atoi(products[i*3+4].c_str()));
 				cout << "Введите ваши ФИО: " << endl;
 				string fio;
 				getline(cin, fio);
 				cout << "Введите ваш номер телефона: " << endl;
 				string phone;
 				getline(cin, phone);
-				Order order(ordNumber, "На обработке", fio, phone, pr);
+				Order order(ordNumber, "На обработке", fio, phone, vectProd[i]);
 				order.fileWriteOrder(orderPath);
 				cout << "Заказ оформлен!" << endl;
 				system("pause");
@@ -351,6 +355,42 @@ void viewOrder() {
 	}
 }
 
+void orderDelete() {
+	system("cls");
+
+	const char delim = ';';
+
+	ifstream in(orderPath);
+	vector <string> ords;
+	vector <Order> ordVect;
+	string buff, check, ordNumber;
+	cout << "Введите номер заказа для удаления: ";
+	getline(cin, ordNumber);
+	while (getline(in, buff)) {
+		int ck = 0;
+		size_t start, end = 0;
+		while ((start = buff.find_first_not_of(delim, end)) != std::string::npos)
+		{
+			end = buff.find(delim, start);
+			check = buff.substr(start, end - start);
+			if (ordNumber != check) {
+				ords.push_back(buff.substr(start, end - start));
+				ck = 1;
+			}
+			else break;
+		}
+		if (ck == 1) {
+			Order order(ords[0],ords[1], ords[2], ords[3], ords[4], ords[5], atof(ords[6].c_str()), atoi(ords[7].c_str()));
+			ordVect.push_back(order);
+		}
+		ords.clear();
+	}
+	in.close();
+	for (int i = 0; i < ordVect.size(); i++) {
+		ordVect[i].fileDeleteOrder(orderPath);
+	}
+}
+
 void userMenu() {
 	while (true) {
 		system("cls");
@@ -363,7 +403,7 @@ void userMenu() {
 		{
 		case '1': printCatalog(); break;
 		case '2': placeOrder(); break;
-		case '3': break;
+		case '3': viewOrder(); break;
 		case '4': return; break;
 		}
 	}
@@ -388,7 +428,9 @@ void adminMenu() {
 		case '3': placeOrder(); break;
 		case '4': viewOrder(); break;
 		case '5': break;
-		case '6': break;
+		case '6': 
+			orderDelete();
+			break;
 		case '7': break;
 		case '8': return; break;
 		}
