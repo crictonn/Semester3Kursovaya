@@ -393,7 +393,102 @@ void orderDelete() {
 	system("pause");
 }
 
-void 
+void changeOrder() {
+
+	const char delim = ';';
+
+	ifstream in(orderPath);
+	vector <string> ords;
+	vector <Order> ordVect;
+	string buff, check, ordNumber;
+	char choice;
+	while (true) {
+		system("cls");
+		cout << "Введите номер заказа для изменения: ";
+		getline(cin, ordNumber);
+		cout << "Выберите параметр для изменения: \n"
+			"1. Наименование\n"
+			"2. Бренд\n"
+			"3. Статус\n"
+			"4. ФИО заказчика\n"
+			"5. Телефон заказчика\n"
+			"6. Отмена" << endl;
+		switch (_getch())
+		{
+		case '1': choice = '1'; break;
+		case '2': choice = '2'; break;
+		case '3': choice = '3'; break;
+		case '4': choice = '4'; break;
+		case '5': choice = '5'; break;
+		case '6': return; break;
+		}
+		if (choice == '1' or '2' or '3' or '4' or '5')
+			break;
+	}
+	cout << "Введите новое значение: ";
+	string newline;
+	getline(cin, newline);
+	while (getline(in, buff)) {
+		int ck = 0, k = 0;
+		size_t start, end = 0;
+		while ((start = buff.find_first_not_of(delim, end)) != std::string::npos)
+		{
+			end = buff.find(delim, start);
+			check = buff.substr(start, end - start);
+			if (ordNumber != check) {
+				ords.push_back(buff.substr(start, end - start));
+				ck = 1;
+			}
+			else break;
+		}
+		if (ck == 1) {
+			Order order(ords[k], ords[k + 1], ords[k + 2], ords[k + 3], ords[k + 4], ords[k + 5], atof(ords[k + 6].c_str()), atoi(ords[k + 7].c_str()));
+			ordVect.push_back(order);
+			k++;
+		}
+		else 	
+		{
+			switch (choice) {
+			case '1':{
+				Order order1(ords[k], ords[k + 1], ords[k + 2], ords[k + 3], newline, ords[k + 5], atof(ords[k + 6].c_str()), atoi(ords[k + 7].c_str()));
+				ordVect.push_back(order1);
+				k++;
+				break;
+			}
+			case '2': {
+				Order order2(ords[k], ords[k + 1], ords[k + 2], ords[k + 3], ords[k + 4], newline, atof(ords[k + 6].c_str()), atoi(ords[k + 7].c_str()));
+				ordVect.push_back(order2);
+				k++;
+				break; 
+			}
+			case '3': {
+				Order order3(ords[k], newline, ords[k + 2], ords[k + 3], ords[k + 4], ords[k + 5], atof(ords[k + 6].c_str()), atoi(ords[k + 7].c_str()));
+				ordVect.push_back(order3);
+				k++;
+				break; 
+			}
+			case '4': {
+				Order order4(ords[k], ords[k + 1], newline, ords[k + 3], ords[k + 4], ords[k + 5], atof(ords[k + 6].c_str()), atoi(ords[k + 7].c_str()));
+				ordVect.push_back(order4);
+				k++;
+				break;
+			}
+			case '5':
+				Order order5(ords[k], ords[k + 1], ords[k + 2], newline, ords[k + 4], ords[k + 5], atof(ords[k + 6].c_str()), atoi(ords[k + 7].c_str()));
+				ordVect.push_back(order5);
+				k++;
+				break;
+			}
+		}
+		ords.clear();
+	}
+	in.close();
+	for (int i = 0; i < ordVect.size(); i++) {
+		ordVect[i].fileDeleteOrder(orderPath);
+	}
+	cout << "Изменение успешно" << endl;
+	system("pause");
+}
 
 void userMenu() {
 	while (true) {
@@ -431,7 +526,7 @@ void adminMenu() {
 		case '2': addToCatalog(); break;
 		case '3': placeOrder(); break;
 		case '4': viewOrder(); break;
-		case '5': break;
+		case '5': changeOrder(); break;
 		case '6': orderDelete(); break;
 		case '7': break;
 		case '8': return; break;

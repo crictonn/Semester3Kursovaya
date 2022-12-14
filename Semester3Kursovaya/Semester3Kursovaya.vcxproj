@@ -149,6 +149,7 @@
     <ClInclude Include="Functions.h" />
     <ClInclude Include="Order.h" />
     <ClInclude Include="Product.h" />
+    <ClInclude Include="SmartPointer.h" />
     <ClInclude Include="User.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
