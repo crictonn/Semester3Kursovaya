@@ -54,11 +54,6 @@ void prevMenu() {
 		case '2': registration(); break;
 
 		case '3': return;
-		/*default: 
-			system("cls");
-			cout << "Неверный ввод! " << endl;
-			system("pause");
-			break;*/
 		}
 	
 		
@@ -215,7 +210,7 @@ void printCatalog() {
 			products.push_back(buff.substr(start, end - start));
 		}
 		Product product(products[0],products[1], atof(products[2].c_str()), atoi(products[3].c_str()));
-		cout << product.name << " " << product.brand << " " << product.price << "рублей " << product.inStock << " на складе" << endl;
+		product.printDat();
 		products.clear();
 	}
 	system("pause");

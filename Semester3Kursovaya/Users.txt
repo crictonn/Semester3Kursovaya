@@ -1,5 +1,6 @@
 admin;admin;1;
 qwer;qwer;0;
 qazq;qazq;0;
-qwert;qwert;0;
-pipipopo;1234;1;
+qwert;qwert;1;
+cricton;123456;0;
+gnfdsj;asdfdas;0;

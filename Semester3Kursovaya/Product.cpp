@@ -1,5 +1,11 @@
 #include "Product.h"
 #include <fstream>
+#include <iostream>
+
+void Product::printDat() {
+	cout << "-----------------------------------------------------------------------------------------------------" << endl;
+	cout << "Наименоваие: " << name << " | Брэнд: " << brand << " | Цена: " << price << "рублей | Количество в наличии: " << inStock << endl;
+}
 
 Product::Product() {
 	name = "Телевизор";
