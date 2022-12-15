@@ -9,12 +9,17 @@
 #include <time.h>
 #include <random>
 #include <list>
+#include <iomanip>
 #include "Order.h"
 
 
 using namespace std;
 
 string userPath = "Users.txt", orderPath = "Orders.txt", productsPath = "Products.txt";
+
+void printEqualsLine() {
+	cout << "========================================================================================================================";
+}
 
 void createStaticAdmin() {
 	ifstream in(userPath, ios::app);
@@ -45,9 +50,13 @@ void createStaticAdmin() {
 void prevMenu() {
 	while (true) {
 		system("cls");
-		cout << "1. Вход в аккаунт\n"
-			"2. Регистрация\n"
-			"3. Выход" << endl;
+		printEqualsLine();
+		cout << "\n\n\n\n\n\n\n\n" << endl;
+		cout.setf(ios::right);
+		cout << setw(65) << "1. Вход в аккаунт" << endl;
+		cout << setw(62) << "2. Регистрация" << endl;
+		cout << setw(56) << "3. Выход" << endl;
+		cout.unsetf(ios::right);
 		switch (_getch()) {
 
 		case '1': loggingIn(); break;
@@ -201,6 +210,7 @@ void addToCatalog() {
 
 void printCatalog() {
 	system("cls");
+	printEqualsLine();
 	ifstream in(productsPath);
 	vector <string> products;
 	string buff;
@@ -320,18 +330,22 @@ void findOrder(string ordNumber){// Поиск по переданному стрингу
 			}
 		}
 		if (ck == 1) {
-			for (int i = 0; i < ords.size(); i++) {
+			/*for (int i = 0; i < ords.size(); i++) {
 				cout << ords[i] << " ";
-			}
+			}*/
+			printEqualsLine();
+			cout << setw(11) << ords[0] << " " << setw(18) << ords[1] << " " << setw(10) << ords[2] << " " << setw(14) << ords[3] << " " << setw(8) << ords[4] << "руб " << setw(8) << ords[5] << "шт " << setw(20) << ords[6] << "   " << setw(10) << ords[7] << endl;
+
 		} 
 		if(ck == 1)
 			cout << endl;
 		ords.clear();
 	}
+	printEqualsLine();
 	system("pause");
 }
 
-void findOrder(int ordNumber) {// Поиск по переданному стрингу
+void findOrder(float ordNumber) {// Поиск по переданному дробному
 	system("cls");
 
 	const char delim = ';';
@@ -348,18 +362,19 @@ void findOrder(int ordNumber) {// Поиск по переданному стрингу
 			check = buff.substr(start, end - start);
 			ords.push_back(buff.substr(start, end - start));
 		}
-		if (ordNumber >= atoi(ords[4].c_str())) {
+		if (ordNumber >= atof(ords[4].c_str())) {
 			ck = 1;
 		}
 		if (ck == 1) {
-			for (int i = 0; i < ords.size(); i++) {
-				cout << ords[i] << " ";
-			}
+			printEqualsLine();
+			cout << setw(11) << ords[0] << " " << setw(18) << ords[1] << " " << setw(10) << ords[2] << " " << setw(14) << ords[3] << " " << setw(8) << ords[4] << "руб " << setw(8) << ords[5] << "шт " << setw(20) << ords[6] << "   " << setw(10) << ords[7] << endl;
+
 		}
 		if (ck == 1)
 			cout << endl;
 		ords.clear();
 	}
+	printEqualsLine();
 	system("pause");
 }
 
@@ -371,6 +386,7 @@ void viewOrder() {
 	vector <string> ords;
 	string buff;
 	while (true) {
+		printEqualsLine();
 		cout <<
 			"1. Вывод всех заказов\n"
 			"2. Вывод заказа по его номеру\n"
@@ -388,9 +404,11 @@ void viewOrder() {
 					end = buff.find(delim, start);
 					ords.push_back(buff.substr(start, end - start));
 				}
-				cout << ords[0] << " " << ords[1] << " " << ords[2] << " " << ords[3] << " " << ords[4] << " " << ords[5] << " " << ords[6] << " " << ords[7] << endl;
+				printEqualsLine();
+				cout << setw(11) << ords[0] << " " << setw(18) << ords[1] << " " << setw(10) << ords[2] << " " << setw(14) << ords[3] << " " << setw(8) << ords[4] << "руб " << setw(8) << ords[5] << "шт " << setw(20) << ords[6] << "   " << setw(10) << ords[7] << endl;
 				ords.clear();
 			}
+			printEqualsLine();
 			system("pause");
 			return; break;
 		case '2': {
@@ -407,7 +425,9 @@ void viewOrder() {
 					ords.push_back(buff.substr(start, end - start));
 				}
 				if (ordNumb == ords[0]) {
-					cout << ords[0] << " " << ords[1] << " " << ords[2] << " " << ords[3] << " " << ords[4] << " " << ords[5] << " " << ords[6] << " " << ords[7] << endl;
+					printEqualsLine();
+					cout << setw(11) << ords[0] << " " << setw(18) << ords[1] << " " << setw(10) << ords[2] << " " << setw(14) << ords[3] << " " << setw(8) << ords[4] << "руб " << setw(8) << ords[5] << "шт " << setw(20) << ords[6] << "   " << setw(10) << ords[7] << endl;
+					printEqualsLine();
 					break;
 				}
 				ords.clear();
@@ -418,8 +438,9 @@ void viewOrder() {
 		case '3':
 		{
 			string find;
-			int finder;
+			float finder;
 			system("cls");
+			printEqualsLine();
 			cout <<
 				"Выберите поле для поиска: \n"
 				"1. Название\n"
@@ -646,9 +667,11 @@ void sortOrders() {
 	sort(ordList.begin(), ordList.end(), less_than_key());
 	for (int i = 0; i < ordList.size(); i++)
 	{
+		printEqualsLine();
 		ordList[i].printData();
 		cout << endl;
 	}
+	printEqualsLine();
 	system("pause");
 }
 
@@ -665,10 +688,12 @@ void listUsers() {
 			end = buff.find(delim, start);
 			users.push_back(buff.substr(start, end - start));
 		}
+		printEqualsLine();
 		User us(users[0], users[1], atoi(users[2].c_str()));
 		us.printData();
 		users.clear();
 	}
+	printEqualsLine();
 	system("pause");
 }
 
@@ -768,7 +793,7 @@ void userMaintaining() {
 void userMenu() {
 	while (true) {
 		system("cls");
-		cout << "Меню\n"
+		cout << "========================================================= Меню =========================================================\n"
 			"1. Просмотреть каталог товаров\n"
 			"2. Сформировать заказ\n"
 			"3. Просмотреть информацию о заказе\n"
@@ -786,7 +811,7 @@ void userMenu() {
 void adminMenu() {
 	while (true) {
 		system("cls");
-		cout << "Меню Админитратора\n"
+		cout << "================================================== Меню Админитратора ==================================================\n"
 			"1. Просмотреть каталог товаров\n"
 			"2. Добавить товар в каталог\n"
 			"3. Сформировать заказ\n"

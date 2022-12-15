@@ -5,6 +5,8 @@ using namespace std;
 
 class Order : public Product
 {
+	friend void Product::frPrint();
+
 private:
 	string number, status, customerFIO, customerPhoneNumber;
 

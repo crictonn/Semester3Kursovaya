@@ -1,5 +1,5 @@
 #include "User.h"
-
+#include <iomanip>
 
 User::User() {
 	login = getLogin();
@@ -55,10 +55,11 @@ void User::makeAdmin() {
 
 
 void User::printData() {
+	cout.setf(ios::left);
 	if(adminCoeff == 1)
-		cout << login << " " << password << " Администратор" << endl;
+		cout <<setw(20)<< login << setw(30) << password << " Администратор" << endl;
 	else
-		cout << login << " " << password << endl;
+		cout << setw(20) << login << setw(30) << password << endl;
 }
 
 string User::printlogin(){
