@@ -379,18 +379,25 @@ void orderDelete() {
 			else break;
 		}
 		if (ck == 1) {
-			Order order(ords[k],ords[k+1], ords[k + 2], ords[k + 3], ords[k + 4], ords[k + 5], atof(ords[k + 6].c_str()), atoi(ords[k + 7].c_str()));
+			Order order(ords[k],ords[k+1], ords[k + 2], ords[k + 3], atoi(ords[k + 4].c_str()), atoi(ords[k + 5].c_str()), ords[k + 6], ords[k + 7]);
 			ordVect.push_back(order);
 			k++;
 		}
 		ords.clear();
 	}
 	in.close();
+	ofstream out;
+	out.open(orderPath, ios::trunc);
 	for (int i = 0; i < ordVect.size(); i++) {
-		ordVect[i].fileDeleteOrder(orderPath);
+		ordVect[i].fileWriteOrder(orderPath);
 	}
 	cout << "Удаление успешно" << endl;
 	system("pause");
+}
+
+bool isNumeric(std::string const& str)
+{
+	return !str.empty() && str.find_first_not_of("0123456789") == std::string::npos;
 }
 
 void changeOrder() {
@@ -401,7 +408,7 @@ void changeOrder() {
 	vector <string> ords;
 	vector <Order> ordVect;
 	string buff, check, ordNumber;
-	char choice;
+	char choice = ' ';
 	while (true) {
 		system("cls");
 		cout << "Введите номер заказа для изменения: ";
@@ -412,7 +419,8 @@ void changeOrder() {
 			"3. Статус\n"
 			"4. ФИО заказчика\n"
 			"5. Телефон заказчика\n"
-			"6. Отмена" << endl;
+			"6. Количество в наличии\n"
+			"7. Отмена" << endl;
 		switch (_getch())
 		{
 		case '1': choice = '1'; break;
@@ -420,14 +428,21 @@ void changeOrder() {
 		case '3': choice = '3'; break;
 		case '4': choice = '4'; break;
 		case '5': choice = '5'; break;
-		case '6': return; break;
+		case '6': choice = '6'; break;
+		case '7': return; break;
 		}
-		if (choice == '1' or '2' or '3' or '4' or '5')
+		if (choice == '1' || choice == '2' || choice == '3' || choice == '4' || choice == '5' || choice == '6')
 			break;
 	}
 	cout << "Введите новое значение: ";
 	string newline;
-	getline(cin, newline);
+	if (choice == '6') {
+		while (!isNumeric) {
+			getline(cin, newline);
+		}
+	}
+	else
+		getline(cin, newline);
 	while (getline(in, buff)) {
 		int ck = 0, k = 0;
 		size_t start, end = 0;
@@ -435,56 +450,65 @@ void changeOrder() {
 		{
 			end = buff.find(delim, start);
 			check = buff.substr(start, end - start);
-			if (ordNumber != check) {
-				ords.push_back(buff.substr(start, end - start));
+			if (ordNumber == check) {
 				ck = 1;
 			}
-			else break;
+			ords.push_back(buff.substr(start, end - start));
 		}
-		if (ck == 1) {
-			Order order(ords[k], ords[k + 1], ords[k + 2], ords[k + 3], ords[k + 4], ords[k + 5], atof(ords[k + 6].c_str()), atoi(ords[k + 7].c_str()));
+		if (ck == 0) {
+			Order order(ords[k], ords[k + 1], ords[k + 2], ords[k + 3], atoi(ords[k + 4].c_str()), atoi(ords[k + 5].c_str()), ords[k + 6], ords[k + 7]);
 			ordVect.push_back(order);
 			k++;
 		}
-		else 	
+		else
 		{
 			switch (choice) {
-			case '1':{
-				Order order1(ords[k], ords[k + 1], ords[k + 2], ords[k + 3], newline, ords[k + 5], atof(ords[k + 6].c_str()), atoi(ords[k + 7].c_str()));
-				ordVect.push_back(order1);
+			case '1': {
+				Order order(ords[k], newline, ords[k + 2], ords[k + 3], atof(ords[k + 4].c_str()), atoi(ords[k + 5].c_str()), ords[k + 6], ords[k + 7]);
+				ordVect.push_back(order);
 				k++;
 				break;
 			}
 			case '2': {
-				Order order2(ords[k], ords[k + 1], ords[k + 2], ords[k + 3], ords[k + 4], newline, atof(ords[k + 6].c_str()), atoi(ords[k + 7].c_str()));
-				ordVect.push_back(order2);
+				Order order(ords[k], ords[k + 1], newline, ords[k + 3], atof(ords[k + 4].c_str()), atoi(ords[k + 5].c_str()), ords[k + 6], ords[k + 7]);
+				ordVect.push_back(order);
 				k++;
-				break; 
+				break;
 			}
 			case '3': {
-				Order order3(ords[k], newline, ords[k + 2], ords[k + 3], ords[k + 4], ords[k + 5], atof(ords[k + 6].c_str()), atoi(ords[k + 7].c_str()));
-				ordVect.push_back(order3);
+				Order order(ords[k], ords[k + 1], ords[k + 2], newline, atof(ords[k + 4].c_str()), atoi(ords[k + 5].c_str()), ords[k + 6], ords[k + 7]);
+				ordVect.push_back(order);
 				k++;
-				break; 
+				break;
 			}
 			case '4': {
-				Order order4(ords[k], ords[k + 1], newline, ords[k + 3], ords[k + 4], ords[k + 5], atof(ords[k + 6].c_str()), atoi(ords[k + 7].c_str()));
-				ordVect.push_back(order4);
+				Order order(ords[k], ords[k + 1], ords[k + 2], ords[k + 3], atof(ords[k + 4].c_str()), atoi(ords[k + 5].c_str()), newline, ords[k + 7]);
+				ordVect.push_back(order);
 				k++;
 				break;
 			}
-			case '5':
-				Order order5(ords[k], ords[k + 1], ords[k + 2], newline, ords[k + 4], ords[k + 5], atof(ords[k + 6].c_str()), atoi(ords[k + 7].c_str()));
-				ordVect.push_back(order5);
+			case '5': {
+				Order order(ords[k], ords[k + 1], ords[k + 2], ords[k + 3], atof(ords[k + 4].c_str()), atoi(ords[k + 5].c_str()), ords[k + 6], newline);
+				ordVect.push_back(order);
 				k++;
 				break;
+			}
+			case '6': {
+				Order order(ords[k], ords[k + 1], ords[k + 2], ords[k + 3], atof(ords[k + 4].c_str()), atoi(newline.c_str()), ords[k + 6], ords[k + 7]);
+				ordVect.push_back(order);
+				k++;
+				break;
+			}
+
 			}
 		}
 		ords.clear();
 	}
 	in.close();
+	ofstream out(orderPath, ios::trunc);
+	out.close();
 	for (int i = 0; i < ordVect.size(); i++) {
-		ordVect[i].fileDeleteOrder(orderPath);
+		ordVect[i].fileWriteOrder(orderPath);
 	}
 	cout << "Изменение успешно" << endl;
 	system("pause");

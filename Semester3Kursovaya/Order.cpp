@@ -20,7 +20,7 @@ Order::Order(string Number, string Stat, string fio, string pone, Product produc
 	inStock = product.inStock;
 }
 
-Order::Order(string Number, string Stat, string fio, string pone, string Name, string Brand, float Price, int instock) {
+Order::Order(string Number, string Name, string Brand, string Stat,  float Price, int instock, string fio, string pone) {
 	number = Number;
 	status = Stat;
 	customerFIO = fio;
@@ -41,7 +41,6 @@ void Order::fileWriteOrder(string path) {
 };
 
 void Order::fileDeleteOrder(string path) {
-	ofstream out;
-	out.open(path, ios::trunc);
+	ofstream out(path, ios::app);
 	out << number << ';' << name << ';' << brand << ';' << status << ';' << price << ';' << inStock << ';' << customerFIO << ';' << customerPhoneNumber << ';' << endl;
 };
