@@ -7,10 +7,16 @@ User::User() {
 	adminCoeff = 0;
 };
 
-User::User(string log, string password) {
+User::User(string log, string pass) {
 	login = log;
-	User::password = password;
-	User::adminCoeff = 0;
+	password = pass;
+	adminCoeff = 0;
+};
+
+User::User(string log, string pass, int adm) {
+	login = log;
+	password = pass;
+	adminCoeff = adm;
 };
 
 User::~User() {
@@ -49,7 +55,10 @@ void User::makeAdmin() {
 
 
 void User::printData() {
-	cout << login << " " << password << " " << adminCoeff << endl;
+	if(adminCoeff == 1)
+		cout << login << " " << password << " Администратор" << endl;
+	else
+		cout << login << " " << password << endl;
 }
 
 string User::printlogin(){

@@ -215,7 +215,7 @@ void printCatalog() {
 			products.push_back(buff.substr(start, end - start));
 		}
 		Product product(products[0],products[1], atof(products[2].c_str()), atoi(products[3].c_str()));
-		cout << product;
+		cout << product.name << " " << product.brand << " " << product.price << "рублей " << product.inStock << " на складе" << endl;
 		products.clear();
 	}
 	system("pause");
@@ -514,6 +514,119 @@ void changeOrder() {
 	system("pause");
 }
 
+void listUsers() {
+	system("cls");
+	ifstream in(userPath);
+	const char delim = ';';
+	string buff;
+	vector<string> users;
+	while (getline(in, buff)) {
+		size_t start, end = 0;
+		while ((start = buff.find_first_not_of(delim, end)) != std::string::npos)
+		{
+			end = buff.find(delim, start);
+			users.push_back(buff.substr(start, end - start));
+		}
+		User us(users[0], users[1], atoi(users[2].c_str()));
+		us.printData();
+		users.clear();
+	}
+	system("pause");
+}
+
+void deleteUser(string deleteLogin) {
+	ifstream in(userPath);
+	const char delim = ';';
+	string buff;
+	vector<string> users;
+	vector<User> addUserVect;
+	while (getline(in, buff)) {
+		size_t start, end = 0;
+		while ((start = buff.find_first_not_of(delim, end)) != std::string::npos)
+		{
+			end = buff.find(delim, start);
+			users.push_back(buff.substr(start, end - start));
+		}
+		if (users[0] != deleteLogin) {
+			User us(users[0], users[1], atoi(users[2].c_str()));
+			addUserVect.push_back(us);
+		}
+		users.clear();
+	}
+	in.close();
+	ofstream out;
+	out.open(userPath, ios::trunc);
+	for (int i = 0; i < addUserVect.size(); i++)
+		addUserVect[i].fileWrite(userPath);
+};
+
+void giveAdminRights(string changeLogin) {
+	ifstream in(userPath);
+	const char delim = ';';
+	string buff;
+	vector<string> users;
+	vector<User> addUserVect;
+	while (getline(in, buff)) {
+		size_t start, end = 0;
+		while ((start = buff.find_first_not_of(delim, end)) != std::string::npos)
+		{
+			end = buff.find(delim, start);
+			users.push_back(buff.substr(start, end - start));
+		}
+		if (users[0] == changeLogin) {
+			User us(users[0], users[1], 1);
+			addUserVect.push_back(us);
+		}
+		if (users[0] == changeLogin)
+			break;
+		users.clear();
+	}
+	in.close();
+	deleteUser(changeLogin);
+	addUserVect[0].fileWrite(userPath);
+};
+
+void userMaintaining() {
+	
+	while (true) {
+		system("cls");
+		cout <<
+			"1. Просмотреть всех пользователей\n"
+			"2. Удалить пользователя\n"
+			"3. Сделать пользователя администратором\n"
+			"4. Отмена" << endl;
+		switch (_getch()) {
+		case '1': listUsers(); break;
+		case '2': {
+			string deleteLogin;
+			while (deleteLogin.empty()) {
+				system("cls");
+				cout << "Введите логин для удаления: ";
+				getline(cin, deleteLogin);
+			}
+			deleteUser(deleteLogin);
+			cout << "Пользователь успешно удален" << endl;
+			system("pause"); 
+			break;
+		}
+
+		case '3': {
+			string upgradeLogin;
+			while (upgradeLogin.empty()) {
+				system("cls");
+				cout << "Введите логин пользователя для наделения правами: ";
+				getline(cin, upgradeLogin);	
+			}
+			giveAdminRights(upgradeLogin);
+			cout << "Права успешно выданы" << endl;
+			system("pause");
+			break;
+		}
+		case '4': return; break;
+		}
+	}
+}
+
 void userMenu() {
 	while (true) {
 		system("cls");
@@ -552,7 +665,7 @@ void adminMenu() {
 		case '4': viewOrder(); break;
 		case '5': changeOrder(); break;
 		case '6': orderDelete(); break;
-		case '7': break;
+		case '7': userMaintaining(); break;
 		case '8': return; break;
 		}
 	}

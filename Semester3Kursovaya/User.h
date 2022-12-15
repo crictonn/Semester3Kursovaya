@@ -16,7 +16,8 @@ private:
 public:
 	
 	User();
-	User(string login, string password);
+	User(string login, string pass);
+	User(string login, string pass, int adm);
 	~User();
 
 	string getLogin();

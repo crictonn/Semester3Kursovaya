@@ -37,16 +37,4 @@ void main() {
 
 	createStaticAdmin();
 	prevMenu();
-	
-	
-	//addToCatalog();
-	//placeOrder();
-	//viewOrder();
-
-	//User user;
-	//user.makeAdmin();
-	//user.printData();
-	/*User user;
-	getline(cin, user.login);
-	cout << user.login;*/
 }
