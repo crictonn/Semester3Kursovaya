@@ -11,6 +11,8 @@ private:
 public:
 	void fileWriteOrder(string path);
 	void fileDeleteOrder(string path);
+	string outName();
+	void printData();
 
 	Order();
 	Order(string Number, string Stat, string fio, string pone, Product product);

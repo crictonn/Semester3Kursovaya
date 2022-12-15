@@ -7,7 +7,13 @@
 
 using namespace std;
 
-class User
+class Person {
+public:
+	virtual void fileWrite(string path) = 0;
+	virtual void getFromFile(string path, string checkLogin) = 0;
+};
+
+class User:public Person 
 {
 private:
 	string login, password;

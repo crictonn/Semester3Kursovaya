@@ -1,5 +1,6 @@
 #include "Order.h"
 #include <fstream>
+#include <iostream>
 
 //	string name, brand, number, status, customerFIO, customerPhoneNumber;
 //	float price;
@@ -44,3 +45,11 @@ void Order::fileDeleteOrder(string path) {
 	ofstream out(path, ios::app);
 	out << number << ';' << name << ';' << brand << ';' << status << ';' << price << ';' << inStock << ';' << customerFIO << ';' << customerPhoneNumber << ';' << endl;
 };
+
+string Order::outName() {
+	return name;
+}
+
+void Order::printData() {
+	cout << number << " " << name << " " << brand << " " << status << " " << price << " " << inStock << " " << customerFIO << " " << customerPhoneNumber << endl;
+}

@@ -8,6 +8,7 @@
 #include <vector>
 #include <time.h>
 #include <random>
+#include <list>
 #include "Order.h"
 
 
@@ -59,7 +60,6 @@ void prevMenu() {
 		
 	}
 }
-
 
 void loggingIn() {
 	string inLog, inPass;
@@ -135,6 +135,10 @@ void registration() {
 
 ostream& operator << (ostream & out, const Product & p) {
 	return out << p.name << ';' << p.brand << ';' << p.price << ';' << p.inStock << ';'<<'\n';
+}
+
+istream& operator >> (istream& in, Product& p) {
+	return in >> p.name >> p.brand >> p.price >> p.inStock;
 }
 
 void floatException(float value) {
@@ -295,6 +299,70 @@ void placeOrder() {
 	}
 };
 
+void findOrder(string ordNumber){// Поиск по переданному стрингу
+	system("cls");
+
+	const char delim = ';';
+
+	ifstream in(orderPath);
+	vector <string> ords;
+	string buff, check;
+	while (getline(in, buff)) {
+		int ck = 0;
+		size_t start, end = 0;
+		while ((start = buff.find_first_not_of(delim, end)) != std::string::npos)
+		{
+			end = buff.find(delim, start);
+			check = buff.substr(start, end - start);
+			ords.push_back(buff.substr(start, end - start));
+			if (ordNumber == check) {
+				ck = 1;
+			}
+		}
+		if (ck == 1) {
+			for (int i = 0; i < ords.size(); i++) {
+				cout << ords[i] << " ";
+			}
+		} 
+		if(ck == 1)
+			cout << endl;
+		ords.clear();
+	}
+	system("pause");
+}
+
+void findOrder(int ordNumber) {// Поиск по переданному стрингу
+	system("cls");
+
+	const char delim = ';';
+
+	ifstream in(orderPath);
+	vector <string> ords;
+	string buff, check;
+	while (getline(in, buff)) {
+		int ck = 0;
+		size_t start, end = 0;
+		while ((start = buff.find_first_not_of(delim, end)) != std::string::npos)
+		{
+			end = buff.find(delim, start);
+			check = buff.substr(start, end - start);
+			ords.push_back(buff.substr(start, end - start));
+		}
+		if (ordNumber >= atoi(ords[4].c_str())) {
+			ck = 1;
+		}
+		if (ck == 1) {
+			for (int i = 0; i < ords.size(); i++) {
+				cout << ords[i] << " ";
+			}
+		}
+		if (ck == 1)
+			cout << endl;
+		ords.clear();
+	}
+	system("pause");
+}
+
 void viewOrder() {
 	system("cls");
 	const char delim = ';';
@@ -305,10 +373,12 @@ void viewOrder() {
 	while (true) {
 		cout <<
 			"1. Вывод всех заказов\n"
-			"2. Вывод заказа по его номеру" << endl;
+			"2. Вывод заказа по его номеру\n"
+			"3. Поиск заказа по полю\n"
+			"4. Отмена"<< endl;
 		switch (_getch())
 		{
-		case '1': 
+		case '1':
 			system("cls");
 
 			while (getline(in, buff)) {
@@ -323,7 +393,7 @@ void viewOrder() {
 			}
 			system("pause");
 			return; break;
-		case '2': 
+		case '2': {
 			system("cls");
 			cout << "Введите номер заказа: ";
 			string ordNumb;
@@ -343,7 +413,44 @@ void viewOrder() {
 				ords.clear();
 			}
 			system("pause");
-			return; break;
+			return; break; 
+		}
+		case '3':
+		{
+			string find;
+			int finder;
+			system("cls");
+			cout <<
+				"Выберите поле для поиска: \n"
+				"1. Название\n"
+				"2. Бренд\n"
+				"3. Максимальная цена\n"
+				"4. Отмена" << endl;
+			switch (_getch())
+			{
+			case '1': 
+			case '2':  
+				system("cls");
+				cout << "Введите какую строку искать: ";
+				getline(cin, find);
+				findOrder(find);
+				return;
+				break;
+			case '3': 
+				system("cls");
+				cout << "Введите максимальную цену: ";
+				cin >> finder;
+				findOrder(finder);
+				return;
+				break;
+				
+			case '4':  return; break;
+			}
+
+				return; break;
+		}
+		case '4':
+			return;
 		}
 		
 	}
@@ -390,7 +497,7 @@ void orderDelete() {
 	system("pause");
 }
 
-bool isNumeric(std::string const& str)
+bool isNumeric(string const& str)
 {
 	return !str.empty() && str.find_first_not_of("0123456789") == std::string::npos;
 }
@@ -506,6 +613,42 @@ void changeOrder() {
 		ordVect[i].fileWriteOrder(orderPath);
 	}
 	cout << "Изменение успешно" << endl;
+	system("pause");
+}
+
+struct less_than_key
+{
+	inline bool operator() (Order& class1, Order& class2)
+	{
+		return (class1.outName() < class2.outName());
+	}
+};
+
+void sortOrders() {
+	system("cls");
+	ifstream in(orderPath);
+	string buff, parametr;
+	vector<string> str;
+	vector<Order> ordList;
+	const char delim = ';';
+	int k = 0;
+	while (getline(in, buff)) {	
+		size_t start, end = 0;
+		while ((start = buff.find_first_not_of(delim, end)) != std::string::npos)
+		{
+			end = buff.find(delim, start);
+			str.push_back(buff.substr(start, end - start));
+		}
+		Order ord(str[0], str[1], str[2], str[3], atoi(str[4].c_str()), atoi(str[5].c_str()), str[6], str[7]);
+		ordList.push_back(ord);
+		str.clear();
+	}
+	sort(ordList.begin(), ordList.end(), less_than_key());
+	for (int i = 0; i < ordList.size(); i++)
+	{
+		ordList[i].printData();
+		cout << endl;
+	}
 	system("pause");
 }
 
@@ -651,7 +794,8 @@ void adminMenu() {
 			"5. Изменить данные о заказе\n"
 			"6. Удалить заказ\n"
 			"7. Меню работы с пользователями\n"
-			"8. Выход" << endl;
+			"8. Сортировка заказов по названию\n"
+			"9. Выход" << endl;
 		switch (_getch())
 		{
 		case '1': printCatalog(); break;
@@ -661,7 +805,8 @@ void adminMenu() {
 		case '5': changeOrder(); break;
 		case '6': orderDelete(); break;
 		case '7': userMaintaining(); break;
-		case '8': return; break;
+		case '8': sortOrders(); break;
+		case '9': return; break;
 		}
 	}
 }
