@@ -10,6 +10,7 @@
 #include <random>
 #include <list>
 #include <iomanip>
+#include <memory>
 #include "Order.h"
 
 
@@ -523,8 +524,11 @@ bool isNumeric(string const& str)
 	return !str.empty() && str.find_first_not_of("0123456789") == std::string::npos;
 }
 
+
 void changeOrder() {
 
+	std::weak_ptr<Order> wptr; // Смарт-поинтер
+	std::unique_ptr<Order> item(new Order);
 	const char delim = ';';
 
 	ifstream in(orderPath);
@@ -534,7 +538,21 @@ void changeOrder() {
 	char choice = ' ';
 	while (true) {
 		system("cls");
-		cout << "Введите номер заказа для изменения: ";
+		while (getline(in, buff)) {
+			size_t start, end = 0;
+			while ((start = buff.find_first_not_of(delim, end)) != std::string::npos)
+			{
+				end = buff.find(delim, start);
+				ords.push_back(buff.substr(start, end - start));
+			}
+			printEqualsLine();
+			cout << setw(11) << ords[0] << " " << setw(18) << ords[1] << " " << setw(10) << ords[2] << " " << setw(14) << ords[3] << " " << setw(8) << ords[4] << "руб " << setw(8) << ords[5] << "шт " << setw(20) << ords[6] << "   " << setw(10) << ords[7] << endl;
+			ords.clear();
+		}
+		printEqualsLine();
+		in.close();
+		ifstream in(orderPath);
+		cout << "\nВведите номер заказа для изменения: ";
 		getline(cin, ordNumber);
 		cout << "Выберите параметр для изменения: \n"
 			"1. Наименование\n"

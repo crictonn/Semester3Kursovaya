@@ -51,5 +51,4 @@ string Order::outName() {
 
 void Order::printData() {
 	cout << setw(11) << number << " " << setw(18) << name << " " << setw(10) << brand << " " << setw(14) << status << " " << setw(8) << price << "руб " << setw(8) << inStock << "шт " << setw(20) << customerFIO << "   " << setw(10) << customerPhoneNumber ;
-	//cout << number << " " << name << " " << brand << " " << status << " " << price << " " << inStock << " " << customerFIO << " " << customerPhoneNumber << endl;
 }
